@@ -25,5 +25,31 @@ router.post("/process-signup", (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.get("/login", (req, res, next) => {
+  res.render("auth-views/login-form.hbs");
+});
+
+router.post("/process-login", (req, res, next) => {
+  const { email, originalPassword } = req.body;
+
+  // search the database for a user with that email
+  User.findOne({ email: { $eq: email } })
+    .then(userDoc => {
+      // HERE WE WILL CHECK IF THE EMAIL IS WRONG
+
+      // check the password
+      const { encryptedPassword } = userDoc;
+      // "compareSync()" will return FALSE if "originalPassword" is WRONG
+      if (!bcrypt.compareSync(originalPassword, encryptedPassword)) {
+        // redirect to the login page if the password is wrong
+        res.redirect("/login");
+      }
+      else {
+        res.redirect("/");
+      }
+    })
+    .catch(err => next(err));
+});
+
 
 module.exports = router;
