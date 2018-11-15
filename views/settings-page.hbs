@@ -1,0 +1,17 @@
+<h2>User Settings</h2>
+
+<form action="/process-settings" method="POST">
+  <label>
+    Full Name:
+    <input type="text" name="fullName" value="{{currentUser.fullName}}"
+        placeholder="Leia Organa" />
+  </label>
+
+  <label>
+    Email:
+    <input type="email" name="email" value="{{currentUser.email}}"
+        placeholder="leia@resistance.com" />
+  </label>
+
+  <button>Save Settings</button>
+</form>
