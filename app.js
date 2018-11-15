@@ -91,5 +91,8 @@ app.use('/', index);
 const authRouter = require("./routes/auth-router.js");
 app.use("/", authRouter);
 
+const roomRouter = require("./routes/room-router.js");
+app.use("/", roomRouter);
+
 
 module.exports = app;
