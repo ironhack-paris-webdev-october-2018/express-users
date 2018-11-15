@@ -10,6 +10,11 @@ const logger       = require('morgan');
 const path         = require('path');
 const session      = require("express-session");
 const flash        = require("connect-flash");
+const MongoStore   = require("connect-mongo")(session);
+const passport     = require("passport");
+
+// run the code inside "passport-setup.js"
+require("./config/passport/passport-setup.js");
 
 
 mongoose
@@ -54,13 +59,21 @@ app.use(session({
   saveUninitialized: true,
   // "secret" should be a string that's different for every app
   secret: "eXUW6iJ6=2h}yBC36P^;MmJ+fpYiU8A[Mg2KNRAj?C",
+  // use the "connect-mongo" npm package to store session info in MongoDB
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
 }));
+// set up Passport with our session (creates properties & methods for "req")
+app.use(passport.initialize());
+app.use(passport.session());
 // enables flash messages in our routes with "req.flash()"
 app.use(flash());
 // app.use() defines MIDDLEWARE functions (they runs before ALL your routes)
 app.use((req, res, next) => {
-  // send flash messages to the hbs file as "messages"
+  // send flash messages to ALL hbs files as "messages"
   res.locals.messages = req.flash();
+  // send logged-in user's info to ALL hbs files as "currentUser"
+  res.locals.currentUser = req.user;
+
   // you need this or your app won't work (pages will load forever)
   next();
 });

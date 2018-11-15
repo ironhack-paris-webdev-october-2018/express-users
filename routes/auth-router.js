@@ -65,14 +65,26 @@ router.post("/process-login", (req, res, next) => {
         res.redirect("/login");
       }
       else {
-        // "req.flash()" is defined by "connect-flash"
-        // (2 arguments: message type and message text)
-        req.flash("success", "Login success! 😎");
-        // redirect to the home page if the password is CORRECT
-        res.redirect("/");
+        // "req.logIn()" is a Passport method that calls "serializeUser()"
+        // (that saves the USER ID in the session)
+        req.logIn(userDoc, () => {
+          // "req.flash()" is defined by "connect-flash"
+          // (2 arguments: message type and message text)
+          req.flash("success", "Login success! 😎");
+          // redirect to the home page if the password is CORRECT
+          res.redirect("/");
+        });
       }
     })
     .catch(err => next(err));
+});
+
+router.get("/logout", (req, res, next) => {
+  // "req.logOut()" is a Passport method that removes the user ID from session
+  req.logOut();
+
+  req.flash("success", "Logged out successfully! 👋🏽");
+  res.redirect("/");
 });
 
 
