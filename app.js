@@ -94,5 +94,8 @@ app.use("/", authRouter);
 const roomRouter = require("./routes/room-router.js");
 app.use("/", roomRouter);
 
+const adminRouter = require("./routes/admin-router.js");
+app.use("/", adminRouter);
+
 
 module.exports = app;
