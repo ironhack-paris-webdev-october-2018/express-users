@@ -16,7 +16,7 @@ const userSchema = new Schema({
     unique: true,
     match: /^.+@.+\..+$/,
   },
-  encryptedPassword: { type: String, required: true },
+  encryptedPassword: { type: String, },
   role: {
     type: String,
     enum: [ "normal", "admin" ],

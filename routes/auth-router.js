@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 const User = require("../models/user-model.js");
 
@@ -86,6 +87,24 @@ router.get("/logout", (req, res, next) => {
   req.flash("success", "Logged out successfully! 👋🏽");
   res.redirect("/");
 });
+
+// Visiting "/google/login" will redirect the user to Google for logging in
+router.get("/google/login",
+  passport.authenticate("google", {
+    scope: [
+      "https://www.googleapis.com/auth/plus.login",
+      "https://www.googleapis.com/auth/plus.profile.emails.read",
+    ]
+  }));
+
+// This is where users will be redirected to after accepting Google login
+router.get("/google/user-info",
+  passport.authenticate("google", {
+    successRedirect: "/",
+    successFlash: "Google login successful! 🐢",
+    failureRedirect: "/login",
+    failureFlash: "Google login failed! 🦑",
+  }));
 
 
 module.exports = router;
