@@ -20,6 +20,12 @@ const specialAdmins = [
     encryptedPassword: bcrypt.hashSync("blah0", 10),
     role: "admin",
   },
+  {
+    fullName: "Mathis",
+    email: "mathis@gmail.com",
+    encryptedPassword: bcrypt.hashSync("cococo", 10),
+    role: "admin",
+  }
 ];
 
 User.create(specialAdmins)
