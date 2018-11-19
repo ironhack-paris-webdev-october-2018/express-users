@@ -1,16 +1,26 @@
 <h2>User Settings</h2>
 
-<form action="/process-settings" method="POST">
+{{#if currentUser.avatar}}
+<img src="{{currentUser.avatar}}" alt="avatar">
+{{/if}}
+
+
+{{!-- without enctype="multipart/form-data" the image upload wont work --}}
+<form action="/process-settings" method="POST" enctype="multipart/form-data">
   <label>
     Full Name:
-    <input type="text" name="fullName" value="{{currentUser.fullName}}"
-        placeholder="Leia Organa" />
+    <input type="text" name="fullName" value="{{currentUser.fullName}}" placeholder="Leia Organa" />
   </label>
 
   <label>
     Email:
-    <input type="email" name="email" value="{{currentUser.email}}"
-        placeholder="leia@resistance.com" />
+    <input type="email" name="email" value="{{currentUser.email}}" placeholder="leia@resistance.com" />
+  </label>
+
+  <label>
+    Avatar
+    {{!-- avatarUpload comes from index.js --}}
+    <input type="file" name="avatarUpload">
   </label>
 
   <button>Save Settings</button>
