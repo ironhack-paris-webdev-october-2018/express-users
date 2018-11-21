@@ -6,8 +6,8 @@ const User = require("../../models/user-model.js");
 
 passport.use(new GoogleStrategy({
   // settings object for the GoogleStrategy class
-  clientID: "blah",
-  clientSecret: "blah",
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: "/google/user-info",
   proxy: true, // need this for production version to work 🤷‍♀️
 }, (accessToken, refreshToken, userInfo, done) => {
