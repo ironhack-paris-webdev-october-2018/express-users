@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 
 const User = require("../models/user-model.js");
+const { sendSignupMail } = require("../config/nodemailer-setup.js");
 
 const router = express.Router();
 
@@ -28,10 +29,14 @@ router.post("/process-signup", (req, res, next) => {
 
   User.create({ fullName, email, encryptedPassword })
     .then(userDoc => {
-      // "req.flash()" is defined by the "connect-flash" npm package
-      // (2 arguments: message type and message text)
-      req.flash("success", "Signup success! 😁");
-      res.redirect("/");
+      sendSignupMail(userDoc)
+        .then(() => {
+          // "req.flash()" is defined by the "connect-flash" npm package
+          // (2 arguments: message type and message text)
+          req.flash("success", "Signup success! 😁");
+          res.redirect("/");
+        })
+        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
